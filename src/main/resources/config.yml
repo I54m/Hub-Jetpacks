@@ -1,0 +1,9 @@
+JetpackItem:
+  material: IRON_CHESTPLATE
+  name: '&c&lJetPack'
+  lore:
+    - '&6Allows you to fly, but beware it has a fuel restriction!'
+EngageItemslot: 8 #far right slot on hotbar
+FuelusePerBoost: 0.01
+
+

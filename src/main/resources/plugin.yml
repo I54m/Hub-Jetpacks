@@ -1,0 +1,7 @@
+name: Hub-Jetpacks
+version: ${project.version}
+main: com.i54m.hubjetpacks.HubJetpacks
+api-version: 1.16
+authors: [ i54m ]
+description: Jetpacks for use in a hub or lobby
+website: https://i54m.com

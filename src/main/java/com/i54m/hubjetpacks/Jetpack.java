@@ -15,7 +15,8 @@ public class Jetpack {
     private final BossBar bossBar = Bukkit.createBossBar(ChatColor.GREEN + "Jetpack ready!", BarColor.YELLOW, BarStyle.SEGMENTED_10);
     @Getter
     private boolean engaged = false;
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean outOfFuel = false;
     @Getter
     private boolean fuelingCooldown = false;
@@ -37,7 +38,7 @@ public class Jetpack {
         if (owner.getLocation().subtract(0, 1, 0).getBlock().getType().isSolid()) {
             owner.playSound(owner.getLocation(), Sound.ENTITY_BLAZE_SHOOT, .5f, 1);
             owner.setVelocity(owner.getLocation().getDirection().add(new Vector(0, 3, 0)));
-            owner.spawnParticle(Particle.REDSTONE, owner.getLocation().add(0, 0.75, 0), 5, 0.12, 0.25, 0.12, new Particle.DustOptions(Color.fromRGB(250,100, 0), 1));
+            owner.spawnParticle(Particle.REDSTONE, owner.getLocation().add(0, 0.75, 0), 5, 0.12, 0.25, 0.12, new Particle.DustOptions(Color.fromRGB(250, 100, 0), 1));
             owner.spawnParticle(Particle.REDSTONE, owner.getLocation().add(0, -0.5, 0), 15, 0.12, 0.5, 0.12, new Particle.DustOptions(Color.SILVER, 2));
         }
         owner.setAllowFlight(true);
@@ -45,8 +46,10 @@ public class Jetpack {
         owner.sendMessage(ChatColor.GREEN + "Engaging jetpack!");
         bossBar.setTitle(ChatColor.GREEN + "Jetpack Engaged!");
         owner.getInventory().setItem(plugin.getConfig().getInt("EngageItemslot", 8), plugin.getCooldownItem());
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> owner.getInventory().setItem(plugin.getConfig().getInt("EngageItemslot", 8), plugin.getDisengageItem()), 30);
-    }
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            if (!outOfFuel && owner.getInventory().getItem(plugin.getConfig().getInt("EngageItemslot", 8)).isSimilar(plugin.getCooldownItem()))
+                owner.getInventory().setItem(plugin.getConfig().getInt("EngageItemslot", 8), plugin.getDisengageItem());
+        }, 30);    }
 
     public void disengage() {
         engaged = false;
@@ -57,8 +60,10 @@ public class Jetpack {
         owner.setAllowFlight(false);
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> fuelingCooldown = false, 40);
         owner.getInventory().setItem(plugin.getConfig().getInt("EngageItemslot", 8), plugin.getCooldownItem());
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> owner.getInventory().setItem(plugin.getConfig().getInt("EngageItemslot", 8), plugin.getEngageItem()), 30);
-
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            if (!outOfFuel && owner.getInventory().getItem(plugin.getConfig().getInt("EngageItemslot", 8)).isSimilar(plugin.getCooldownItem()))
+                owner.getInventory().setItem(plugin.getConfig().getInt("EngageItemslot", 8), plugin.getEngageItem());
+        }, 30);
     }
 
     public void outOfFuel() {

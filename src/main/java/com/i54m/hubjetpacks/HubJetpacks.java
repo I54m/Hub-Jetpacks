@@ -99,7 +99,7 @@ public final class HubJetpacks extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerKickListener(), this);
         jetpackTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-            for (Player player : jetpacks.keySet()) {
+            for (Player player : new HashMap<>(jetpacks).keySet()) {
                 if (player.isOnline()) {
                     Jetpack jetpack = jetpacks.get(player);
                     BossBar bossBar = jetpack.getBossBar();

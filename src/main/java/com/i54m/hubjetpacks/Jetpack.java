@@ -28,6 +28,7 @@ public class Jetpack {
         owner.getInventory().setBoots(plugin.getBouncyBoots());
         owner.getInventory().setLeggings(plugin.getSpaceSuitLegs());
         owner.getInventory().setItem(plugin.getConfig().getInt("EngageItemslot", 8), plugin.getEngageItem());
+        owner.updateInventory();
         bossBar.setProgress(1.0);
         bossBar.addPlayer(owner);
         this.owner = owner;
